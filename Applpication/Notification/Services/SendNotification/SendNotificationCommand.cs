@@ -1,0 +1,32 @@
+﻿using Domain.Notification.Enum;
+using Domain.Notification.Interfaces;
+using Domain.Notification.Services;
+using MediatR;
+
+namespace Application.Notification.Services.SendNotification
+{
+    //Dependency Inversion & Factory Design
+    public class SendNotificationCommand : IRequest
+    {
+        public string message { get; set; }
+        public NotificationType notificationType { get; set; }
+    }
+
+    public class SendNotificationCommandHandler : IRequestHandler<SendNotificationCommand>
+    {
+        private readonly INotificationServiceFactory _service;
+
+        public SendNotificationCommandHandler(INotificationServiceFactory service)
+        {
+            _service = service;
+        }
+
+        public Task Handle(SendNotificationCommand request, CancellationToken cancellationToken)
+        {
+            var service = _service.Create(request.notificationType);
+            service.Send(request.message);
+            return Task.CompletedTask;
+        }
+    }
+
+}
