@@ -4,11 +4,16 @@ namespace Application.Order.ObserverDesign
 {
     public class OrderService
     {
-        private readonly IEnumerable<IOrderObserver> _observers;
+        private List<IOrderObserver> _observers = new();
 
-        public OrderService(IEnumerable<IOrderObserver> observers)
+        //public OrderService(IOrderObserver observers)
+        //{
+        //    _observers = observers;
+        //}
+
+        public void Subscribe(IOrderObserver observer)
         {
-            _observers = observers;
+            _observers.Add(observer);
         }
 
         public void PlaceOrder(Domain.Order.Order order)

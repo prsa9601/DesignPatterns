@@ -1,7 +1,7 @@
 ﻿using Domain.User.Builders;
 using MediatR;
 
-namespace Application.User.Services.AddUser
+namespace Application.User.Commands.AddUser
 {
     public class AddUserCommand : IRequest
     {
@@ -19,11 +19,13 @@ namespace Application.User.Services.AddUser
             _builder = builder;
         }
 
-        public Task Handle(AddUserCommand request, CancellationToken cancellationToken)
+
+        Task<Unit> IRequestHandler<AddUserCommand, Unit>.Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
             var user = _builder.WithAge(request.Age).
-                WithUserName(request.UserName).WithPassword(request.Password).Build();
-            return Task.CompletedTask;
+              WithUserName(request.UserName).WithPassword(request.Password).Build();
+            //return Task.CompletedTask;
+            return Task.FromResult(Unit.Value);
         }
     }
 }

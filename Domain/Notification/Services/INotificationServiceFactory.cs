@@ -3,7 +3,7 @@ using Domain.Notification.Interfaces;
 
 namespace Domain.Notification.Services
 {
-    //Dependency Inversion & Factory Design
+    //Dependency Inversion & Factory Method Design
     public interface INotificationServiceFactory
     {
         INotificationService Create(NotificationType notificationType);

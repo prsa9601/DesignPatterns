@@ -8,7 +8,7 @@ namespace Infrastructure.Communication.NotificationServices
     {
         public void Send(string message)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Create SMS Notification");
         }
     }
 }

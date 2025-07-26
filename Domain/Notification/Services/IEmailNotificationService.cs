@@ -4,7 +4,7 @@ using Domain.User;
 namespace Domain.Notification.Services
 {
     //Dependency Inversion & Factory Design
-    public interface IEmailNotificationService : INotificationService,ISmsNotificationService
+    public interface IEmailNotificationService : INotificationService
     {
     }
 }

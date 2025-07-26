@@ -3,9 +3,9 @@ using Domain.Notification.Interfaces;
 using Domain.Notification.Services;
 using MediatR;
 
-namespace Application.Notification.Services.SendNotification
+namespace Application.Notification.Commands.SendNotification
 {
-    //Dependency Inversion & Factory Design
+    //Dependency Inversion & Factory Method Design
     public class SendNotificationCommand : IRequest
     {
         public string message { get; set; }
@@ -21,11 +21,17 @@ namespace Application.Notification.Services.SendNotification
             _service = service;
         }
 
-        public Task Handle(SendNotificationCommand request, CancellationToken cancellationToken)
+        //public Task Handle(SendNotificationCommand request, CancellationToken cancellationToken)
+        //{
+    
+        //}
+        //بجای null به ما unit میده توی جنریک ها
+        Task<Unit> IRequestHandler<SendNotificationCommand, Unit>.Handle(SendNotificationCommand request, CancellationToken cancellationToken)
         {
             var service = _service.Create(request.notificationType);
             service.Send(request.message);
-            return Task.CompletedTask;
+            //return Task.CompletedTask;
+            return Task.FromResult(Unit.Value);
         }
     }
 

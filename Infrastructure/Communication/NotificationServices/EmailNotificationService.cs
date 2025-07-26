@@ -8,7 +8,7 @@ namespace Infrastructure.Communication.NotificationServices
         //Dependency Inversion & Factory Design
         public void Send(string message)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Create Email Notification");
         }
     }
 }
