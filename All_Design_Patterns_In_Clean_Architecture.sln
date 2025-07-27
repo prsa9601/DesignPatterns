@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36310.24 d17.14
+VisualStudioVersion = 17.14.36310.24
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{CD8D50D0-00F6-47CA-BE7F-549BE2A5F14E}"
 EndProject
@@ -14,6 +14,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EndPoint", "EndPoint", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Design_Patterns_API", "EndPoint\Design_Patterns_API\Design_Patterns_API.csproj", "{DF25398E-AC8D-4AC5-81B3-B8DF34EA5F1A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{2907FF41-D0C1-4D6A-A689-1F1DD91CCE1C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FactoryMethod", "FactoryMethod", "{8F1E9C3B-11D5-4F22-B824-854BE8906EE7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AbstractFactory", "AbstractFactory", "{1E61A99F-F7B4-4973-923C-026A319AABF5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Builder", "Builder", "{C89FF908-24E6-4717-8AA6-F7E40D6F981A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +55,9 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DF25398E-AC8D-4AC5-81B3-B8DF34EA5F1A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{8F1E9C3B-11D5-4F22-B824-854BE8906EE7} = {2907FF41-D0C1-4D6A-A689-1F1DD91CCE1C}
+		{1E61A99F-F7B4-4973-923C-026A319AABF5} = {2907FF41-D0C1-4D6A-A689-1F1DD91CCE1C}
+		{C89FF908-24E6-4717-8AA6-F7E40D6F981A} = {2907FF41-D0C1-4D6A-A689-1F1DD91CCE1C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9DD08CC4-9184-46C5-82F6-0F203CC88867}

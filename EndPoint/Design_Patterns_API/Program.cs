@@ -4,6 +4,8 @@ using Application.Order.ObserverDesign;
 using Application.Order.Strategies;
 using Application.Payment.Services;
 using Application.Report.Interfaces;
+using Application.Shape.Factory;
+using Application.Shape.Interface;
 using Application.User.Builders;
 using Applpication;
 using Domain.Notification.Interfaces;
@@ -20,6 +22,7 @@ using Infrastructure.Payment.Adapter;
 using Infrastructure.Payment.LegacyPayment;
 using Infrastructure.Report.Excel;
 using Infrastructure.Report.PDF;
+using Infrastructure.Shape.Rendering;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -65,8 +68,19 @@ builder.Services.AddScoped<IReportFactory, PDFReportFactory>();
 #endregion
 
 #region Adapter
+
 builder.Services.AddScoped<IPaymentService, LegacyPaymentAdapter>();
 builder.Services.AddScoped<LegacyPaymentService>();
+
+#endregion
+
+
+
+#region Bridge
+
+builder.Services.AddScoped<IRasterRenderer, RasterRenderer>();
+builder.Services.AddScoped<IVectorRenderer, VectorRenderer>();
+
 #endregion
 
 

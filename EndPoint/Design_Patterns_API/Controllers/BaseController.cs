@@ -2,6 +2,7 @@
 using Application.Order.Command.Finally;
 using Application.Payment.Commands;
 using Application.Report.Commands.ReportAndExport;
+using Application.Shape.Commands;
 using Application.User.Commands.AddUser;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -92,6 +93,20 @@ namespace Design_Patterns_API.Controllers
             try
             {
                 var result = _mediator.Send(new PayPaymentCommand());
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+      
+        [HttpPost("Bridge")]
+        public IActionResult BridgeShape()
+        {
+            try
+            {
+                var result = _mediator.Send(new ShapePainterCommand());
                 return Ok(result);
             }
             catch (Exception ex)
