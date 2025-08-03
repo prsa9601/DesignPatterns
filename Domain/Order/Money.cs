@@ -1,4 +1,6 @@
-﻿namespace Domain.Order
+﻿using System.ComponentModel.Design;
+
+namespace Domain.Order
 {
     public class Money
     {
@@ -19,6 +21,14 @@
         public static Money FromTooman(long price)
         {
             return new Money(price / 10);
+        }
+        public static Money ApplyDiscount(long price, int discount)
+        {
+            if (discount > 100 || discount < 0)
+            {
+                throw new ArgumentException("Discount must be between 100 and 0.");
+            }
+            return new Money(price *= discount / 100);
         }
         public static Money operator +(Money firstMoney, Money secondMoney)
         {

@@ -2,12 +2,15 @@
 using Application.FlyWeight.Services;
 using Application.GraphicDesign.Services;
 using Application.Notification.Commands.SendNotification;
+using Application.Order.Command.Create;
 using Application.Order.Command.Finally;
 using Application.Payment.Commands;
 using Application.Product.Create;
+using Application.Proxy.Commands;
 using Application.Report.Commands.ReportAndExport;
 using Application.Shape.Commands;
 using Application.User.Commands.AddUser;
+using Application.User.Commands.SendMessage;
 using Design_Patterns_API.Facade;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -209,6 +212,66 @@ namespace Design_Patterns_API.Controllers
             {
                 var result = _flyWeightProductService.GetProduct(Guid.NewGuid());
 
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //این پترن نیازی به پیاده سازی نداره جون که توی لایه اپلیکیشن به کرات با
+        //MediatR پیاده سازی شده
+        [HttpPost("CommandPattern")]
+        public IActionResult CommandPattern()
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("ProxyPattern")]
+        public IActionResult Proxy(int quantity)
+        {
+            try
+            {
+                var result = _mediator.Send(new UpdateInventoryCommand()
+                {
+                    quantity = quantity,
+                });
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+       
+        [HttpPost("ChainOfResponsibility")]
+        public IActionResult ChainOfResponsibilityCreateOrder()
+        {
+            try
+            {
+                var result = _mediator.Send(new CreateOrderCommand());
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+     
+        [HttpPost("Mediator")]
+        public IActionResult MediatorSendMessage()
+        {
+            try
+            {
+                var result = _mediator.Send(new SendMessageCommand());
                 return Ok(result);
             }
             catch (Exception ex)
