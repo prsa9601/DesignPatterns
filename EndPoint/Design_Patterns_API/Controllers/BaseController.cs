@@ -1,7 +1,9 @@
-﻿using Application.Content.Commands;
+﻿using Application.Book.Commands;
+using Application.Content.Commands;
 using Application.FlyWeight.Services;
 using Application.GraphicDesign.Services;
 using Application.Notification.Commands.SendNotification;
+using Application.Order.Command.ChangeStatus;
 using Application.Order.Command.Create;
 using Application.Order.Command.Finally;
 using Application.Payment.Commands;
@@ -272,6 +274,34 @@ namespace Design_Patterns_API.Controllers
             try
             {
                 var result = _mediator.Send(new SendMessageCommand());
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+     
+        [HttpPost("Iterator")]
+        public IActionResult IteratorIteratorTest()
+        {
+            try
+            {
+                var result = _mediator.Send(new IteratorTestCommand());
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+    
+        [HttpPost("State")]
+        public IActionResult StateChangeStatusOrder()
+        {
+            try
+            {
+                var result = _mediator.Send(new ChangeOrderStatusCommand());
                 return Ok(result);
             }
             catch (Exception ex)

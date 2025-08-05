@@ -9,6 +9,7 @@ using Application.Order.Builder;
 using Application.Order.Handlers;
 using Application.Order.ObserverDesign;
 using Application.Order.Services;
+using Application.Order.States.Interfaces;
 using Application.Order.Strategies;
 using Application.Payment.Services;
 using Application.Proxy.Services;
@@ -19,6 +20,7 @@ using Application.User.Builders;
 using Application.User.Mediators;
 using Application.User.Services;
 using Applpication;
+using Domain.Book.Interfaces;
 using Domain.FlyWeight.Entities;
 using Domain.FlyWeight.Interfaces.Repositiry;
 using Domain.Notification.Interfaces;
@@ -31,11 +33,13 @@ using Domain.Order.Services.StrategyDesign;
 using Domain.Proxy.Interfaces;
 using Domain.User.Builders;
 using Domain.User.Mediators;
+using Infrastructure.Book.Collections;
 using Infrastructure.Communication.NotificationServices;
 using Infrastructure.FlyweightPattern.Repositories;
 using Infrastructure.Notifier.Decorators;
 using Infrastructure.Order.Factories;
 using Infrastructure.Order.Services;
+using Infrastructure.Order.States;
 using Infrastructure.Payment.Adapter;
 using Infrastructure.Payment.LegacyPayment;
 using Infrastructure.Proxy.Services;
@@ -194,6 +198,19 @@ builder.Services.AddScoped<ChatService>();
 
 #endregion
 
+#region Iterator
+builder.Services.AddSingleton<IBookCollection, BookCollections>();
+#endregion
+
+
+#region State
+builder.Services.AddScoped<IOrderStateFactory, OrderStateFactory>();
+builder.Services.AddTransient<PendingState>();
+builder.Services.AddTransient<ConfirmedState>();
+builder.Services.AddTransient<ProcessingState>();
+builder.Services.AddTransient<ShippedState>();
+builder.Services.AddTransient<CancelledState>();
+#endregion
 
 builder.Services.AddControllers();
 
