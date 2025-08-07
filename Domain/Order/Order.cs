@@ -1,10 +1,11 @@
 ﻿using Domain.Order.States;
+using Domain.Order.Visitors;
 
 namespace Domain.Order
 {
     public class Order
     {
-        private Guid Id { get; set; }
+        public Guid Id { get; set; }
         public Dictionary<Guid, int>? Products { get; set; }//id, number
         public Guid UserId { get; set; }
         public Money TotalPrice { get; set; }
@@ -21,6 +22,9 @@ namespace Domain.Order
         {
 
         }
+        //Visitor Pattern
+        public void Accept(IOrderVisitor visitor) => visitor.Visit(this);
+
         public void SetState(IOrderState state)
         {
             _state = state;
@@ -38,7 +42,7 @@ namespace Domain.Order
 
             _state.Confirm(this);
         }
-    
+
         public void Process()
         {
             if (_state is null)
@@ -68,29 +72,4 @@ namespace Domain.Order
             IsFinally = true;
         }
     }
-    public enum OrderStatus
-    {
-        Draft,
-        Pending,       // در انتظار پرداخت
-        Processing,    // در حال پردازش
-        Shipped,       // ارسال شده
-        Confirmed,     // تکمیل شده
-        //Completed,     // تکمیل شده
-        //OnHold,        // در حال آماده‌سازی
-        Cancelled      // لغو شده
-    }
-    //public static IOrderState CreateStateFromStatus(OrderStatus orderStatus)
-    //{
-    //    return orderStatus switch
-    //    {
-    //        OrderStatus.Pending => OrderStatus.Pending,
-    //        //OrderStatus.Processing =>new Process,
-    //        OrderStatus.Shipped =>,
-    //        OrderStatus.Completed =>,
-    //        //OrderStatus.OnHold=>,
-    //        OrderStatus.Cancelled =>,
-    //        _ => throw new ArgumentOutOfRangeException(),
-
-    //    };
-    //}
 }

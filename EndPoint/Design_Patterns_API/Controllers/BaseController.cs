@@ -6,11 +6,14 @@ using Application.Notification.Commands.SendNotification;
 using Application.Order.Command.ChangeStatus;
 using Application.Order.Command.Create;
 using Application.Order.Command.Finally;
+using Application.Order.Command.ProcessOrder;
 using Application.Payment.Commands;
+using Application.Product.Commands.ApplyDiscount;
 using Application.Product.Create;
 using Application.Proxy.Commands;
 using Application.Report.Commands.ReportAndExport;
 using Application.Shape.Commands;
+using Application.TextEditor.Commands.Edit;
 using Application.User.Commands.AddUser;
 using Application.User.Commands.SendMessage;
 using Design_Patterns_API.Facade;
@@ -302,6 +305,47 @@ namespace Design_Patterns_API.Controllers
             try
             {
                 var result = _mediator.Send(new ChangeOrderStatusCommand());
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+      
+        [HttpPost("VisitorProduct")]
+        public IActionResult VisitorApplyDiscountProduct()
+        {
+            try
+            {
+                var result = _mediator.Send(new ApplyDiscountCommand());
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+   
+        [HttpPost("VisitorOrder")]
+        public IActionResult VisitorProcessOrder()
+        {
+            try
+            {
+                var result = _mediator.Send(new ProcessOrderCommand());
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost("Memento")]
+        public IActionResult MementoTextDocument()
+        {
+            try
+            {
+                var result = _mediator.Send(new EditDocumentCommand());
                 return Ok(result);
             }
             catch (Exception ex)

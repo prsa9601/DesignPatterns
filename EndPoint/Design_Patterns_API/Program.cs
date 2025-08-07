@@ -11,11 +11,15 @@ using Application.Order.ObserverDesign;
 using Application.Order.Services;
 using Application.Order.States.Interfaces;
 using Application.Order.Strategies;
+using Application.Order.Visitors;
+using Application.Order.Visitors.Services;
 using Application.Payment.Services;
+using Application.Product.Visitors;
 using Application.Proxy.Services;
 using Application.Report.Interfaces;
 using Application.Shape.Factory;
 using Application.Shape.Interface;
+using Application.TextEditor.History;
 using Application.User.Builders;
 using Application.User.Mediators;
 using Application.User.Services;
@@ -31,6 +35,8 @@ using Domain.Order.Services.Factory;
 using Domain.Order.Services.ObserverDesign;
 using Domain.Order.Services.StrategyDesign;
 using Domain.Proxy.Interfaces;
+using Domain.TextDocument.Mementos;
+using Domain.TextEditor.Repository;
 using Domain.User.Builders;
 using Domain.User.Mediators;
 using Infrastructure.Book.Collections;
@@ -40,12 +46,14 @@ using Infrastructure.Notifier.Decorators;
 using Infrastructure.Order.Factories;
 using Infrastructure.Order.Services;
 using Infrastructure.Order.States;
+using Infrastructure.Order.Visitors;
 using Infrastructure.Payment.Adapter;
 using Infrastructure.Payment.LegacyPayment;
 using Infrastructure.Proxy.Services;
 using Infrastructure.Report.Excel;
 using Infrastructure.Report.PDF;
 using Infrastructure.Shape.Rendering;
+using Infrastructure.TextEditor;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -179,7 +187,7 @@ builder.Services.AddTransient<IOrderHandler>(provider =>
     var discount = provider.GetRequiredService<DiscountHandler>();
     var shipping = provider.GetRequiredService<ShippingHandler>();
     var approval = provider.GetRequiredService<ApprovalHandler>();
-    
+
     validation.SetNext(discount)
     .SetNext(shipping)
     .SetNext(approval);
@@ -211,6 +219,24 @@ builder.Services.AddTransient<ProcessingState>();
 builder.Services.AddTransient<ShippedState>();
 builder.Services.AddTransient<CancelledState>();
 #endregion
+
+#region Visitor
+
+builder.Services.AddScoped<OrderTaxCalculate>();
+builder.Services.AddScoped<OrderReportGenerator>();
+builder.Services.AddScoped<ProductDiscountVisitor>();
+builder.Services.AddScoped<OrderProcessor>();
+builder.Services.AddScoped<ExportVisitor>(provider => new ExportVisitor
+(provider.GetRequiredService<IConfiguration>()["ExportPath"]!));
+#endregion
+
+#region Memento 
+
+builder.Services.AddScoped<DocumentHistory>();
+builder.Services.AddScoped<IMementoRepository, MementoRepository>();
+#endregion
+
+
 
 builder.Services.AddControllers();
 

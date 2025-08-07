@@ -1,4 +1,5 @@
 ﻿using Domain.Product.Strategies;
+using Domain.Product.Visitors;
 
 namespace Domain.Product
 {
@@ -6,7 +7,7 @@ namespace Domain.Product
     {
         public Guid Id { get; }
         public string Name { get; }
-        public Domain.Product.ValueObjects.Money Price { get; }
+        public Domain.Product.ValueObjects.Money Price { get; set; }
         public IMeasurementStrategy Measurement { get; }
 
         public Product(string name, Domain.Product.ValueObjects.Money price, IMeasurementStrategy measurement)
@@ -16,6 +17,7 @@ namespace Domain.Product
             Price = price;
             Measurement = measurement ?? throw new ArgumentNullException(nameof(measurement));
         }
+        public void UpdatePrice(decimal newPrice) => Price = new ValueObjects.Money((decimal)newPrice, "IR");
 
         public bool ValidateQuantity(double quantity) => Measurement.Validate(quantity);
 
@@ -26,5 +28,7 @@ namespace Domain.Product
 
             return Measurement.CalculateTotalPrice(Price, quantity);
         }
+        //visitor pattern Integration
+        public void Accept(IProductVisitor productVisitor) => productVisitor.Visit(this);
     }
 }
