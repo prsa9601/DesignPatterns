@@ -5,6 +5,8 @@ using Application.FlyWeight.Services;
 using Application.GraphicDesign.Factories;
 using Application.GraphicDesign.Services;
 using Application.Notification.Commands.SendNotification;
+using Application.Notification.Fallback;
+using Application.Notification.Services;
 using Application.Order.Builder;
 using Application.Order.Handlers;
 using Application.Order.ObserverDesign;
@@ -42,6 +44,8 @@ using Domain.User.Mediators;
 using Infrastructure.Book.Collections;
 using Infrastructure.Communication.NotificationServices;
 using Infrastructure.FlyweightPattern.Repositories;
+using Infrastructure.NotificationSenders;
+using Infrastructure.NotificationSenders.Fallback;
 using Infrastructure.Notifier.Decorators;
 using Infrastructure.Order.Factories;
 using Infrastructure.Order.Services;
@@ -236,7 +240,25 @@ builder.Services.AddScoped<DocumentHistory>();
 builder.Services.AddScoped<IMementoRepository, MementoRepository>();
 #endregion
 
+#region Template Method
 
+builder.Services.AddScoped<EmailNotificationSender>();
+builder.Services.AddScoped<SmsNotificationSender>();
+builder.Services.AddScoped<PushNotificationSender>();
+//builder.Services.AddScoped<INotificationSender>(provider =>
+//{
+//    var sendrs = new List<INotificationSender>
+//    {
+//        provider.GetRequiredService<EmailNotificationSender>(),
+//        provider.GetRequiredService<SmsNotificationSender>(),
+//        provider.GetRequiredService<PushNotificationSender>()
+//    };
+//    return new FallbackNotificationSender(sendrs);
+//});
+builder.Services.AddScoped<IFallbackNotificationSender, FallbackNotificationSender>();
+builder.Services.AddScoped<INotificationSender, FallbackNotificationSender>();
+
+#endregion
 
 builder.Services.AddControllers();
 
