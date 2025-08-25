@@ -6,7 +6,9 @@ namespace Infrastructure.Report.Excel
     {
         public Domain.Report.Report GenerateReport(string title)
         {
-            throw new NotImplementedException("GenerateExcelReport");
+            //throw new NotImplementedException("GenerateExcelReport");
+            int g = 7;
+            return new Domain.Report.Report();
         }
     }
 }

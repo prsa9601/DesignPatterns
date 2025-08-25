@@ -1,8 +1,11 @@
-﻿using Application.Book.Commands;
+﻿#region usings
+
+using Application.Book.Commands;
 using Application.Content.Commands;
 using Application.FlyWeight.Services;
 using Application.GraphicDesign.Services;
 using Application.Notification.Commands.SendNotification;
+using Application.Notification.Commans.TemplateMethod;
 using Application.Order.Command.ChangeStatus;
 using Application.Order.Command.Create;
 using Application.Order.Command.Finally;
@@ -17,9 +20,13 @@ using Application.TextEditor.Commands.Edit;
 using Application.User.Commands.AddUser;
 using Application.User.Commands.SendMessage;
 using Design_Patterns_API.Facade;
+using Domain.Notification.Interfaces;
+using Infrastructure.NotificationSenders;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+#endregion
 
 namespace Design_Patterns_API.Controllers
 {
@@ -256,7 +263,7 @@ namespace Design_Patterns_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-       
+
         [HttpPost("ChainOfResponsibility")]
         public IActionResult ChainOfResponsibilityCreateOrder()
         {
@@ -270,7 +277,7 @@ namespace Design_Patterns_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-     
+
         [HttpPost("Mediator")]
         public IActionResult MediatorSendMessage()
         {
@@ -284,7 +291,7 @@ namespace Design_Patterns_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-     
+
         [HttpPost("Iterator")]
         public IActionResult IteratorIteratorTest()
         {
@@ -298,7 +305,7 @@ namespace Design_Patterns_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-    
+
         [HttpPost("State")]
         public IActionResult StateChangeStatusOrder()
         {
@@ -312,7 +319,7 @@ namespace Design_Patterns_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-      
+
         [HttpPost("VisitorProduct")]
         public IActionResult VisitorApplyDiscountProduct()
         {
@@ -326,7 +333,7 @@ namespace Design_Patterns_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-   
+
         [HttpPost("VisitorOrder")]
         public IActionResult VisitorProcessOrder()
         {
@@ -346,6 +353,24 @@ namespace Design_Patterns_API.Controllers
             try
             {
                 var result = _mediator.Send(new EditDocumentCommand());
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("TemplateMethod")]
+        public IActionResult TemplateMethod()
+        {
+            try
+            {
+                var email = new EmailNotificationSender();
+                var sms = new SmsNotificationSender();
+                var inApp = new PushNotificationSender();
+                var senders = new List<INotificationSender>() { email, sms, inApp };
+                var result = _mediator.Send(new SendNotificationDesignPatternCommand() { Senders = senders});
                 return Ok(result);
             }
             catch (Exception ex)

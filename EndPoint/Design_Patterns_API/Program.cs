@@ -1,3 +1,4 @@
+﻿#region usings
 using Application.Content.Services;
 using Application.Decorator.Interfaces;
 using Application.FlyWeight.Factories;
@@ -5,6 +6,8 @@ using Application.FlyWeight.Services;
 using Application.GraphicDesign.Factories;
 using Application.GraphicDesign.Services;
 using Application.Notification.Commands.SendNotification;
+using Application.Notification.Fallback;
+using Application.Notification.Services;
 using Application.Order.Builder;
 using Application.Order.Handlers;
 using Application.Order.ObserverDesign;
@@ -16,6 +19,7 @@ using Application.Order.Visitors.Services;
 using Application.Payment.Services;
 using Application.Product.Visitors;
 using Application.Proxy.Services;
+using Application.Report.Factories;
 using Application.Report.Interfaces;
 using Application.Shape.Factory;
 using Application.Shape.Interface;
@@ -35,6 +39,7 @@ using Domain.Order.Services.Factory;
 using Domain.Order.Services.ObserverDesign;
 using Domain.Order.Services.StrategyDesign;
 using Domain.Proxy.Interfaces;
+using Domain.Report.Abstractions;
 using Domain.TextDocument.Mementos;
 using Domain.TextEditor.Repository;
 using Domain.User.Builders;
@@ -42,6 +47,8 @@ using Domain.User.Mediators;
 using Infrastructure.Book.Collections;
 using Infrastructure.Communication.NotificationServices;
 using Infrastructure.FlyweightPattern.Repositories;
+using Infrastructure.NotificationSenders;
+using Infrastructure.NotificationSenders.Fallback;
 using Infrastructure.Notifier.Decorators;
 using Infrastructure.Order.Factories;
 using Infrastructure.Order.Services;
@@ -57,6 +64,9 @@ using Infrastructure.TextEditor;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
+#endregion
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,6 +83,21 @@ builder.Services.AddScoped<IUserBuilder, UserBuilder>();
 builder.Services.AddScoped<IOrderBuilder, OrderBuilder>();
 
 #endregion
+
+
+#region AbstractFactory
+
+
+builder.Services.AddScoped<IExcelReportFactory, ExcelReportFactory>();
+builder.Services.AddScoped<IPdfReportFactory, PDFReportFactory>();
+builder.Services.AddTransient<IReportFactory>(provider => provider.GetRequiredService<IPdfReportFactory>());
+builder.Services.AddTransient<IReportFactory>(provider => provider.GetRequiredService<IExcelReportFactory>());
+
+builder.Services.AddScoped<IReportFactoryResolver, ReportFactoryResolver>();
+
+
+#endregion
+
 
 builder.Services.AddScoped<ISmsNotificationService, SmsNotificationService>();
 builder.Services.AddScoped<IEmailNotificationService, EmailNotificationService>();
@@ -236,7 +261,25 @@ builder.Services.AddScoped<DocumentHistory>();
 builder.Services.AddScoped<IMementoRepository, MementoRepository>();
 #endregion
 
+#region Template Method
 
+builder.Services.AddScoped<EmailNotificationSender>();
+builder.Services.AddScoped<SmsNotificationSender>();
+builder.Services.AddScoped<PushNotificationSender>();
+//builder.Services.AddScoped<INotificationSender>(provider =>
+//{
+//    var sendrs = new List<INotificationSender>
+//    {
+//        provider.GetRequiredService<EmailNotificationSender>(),
+//        provider.GetRequiredService<SmsNotificationSender>(),
+//        provider.GetRequiredService<PushNotificationSender>()
+//    };
+//    return new FallbackNotificationSender(sendrs);
+//});
+builder.Services.AddScoped<IFallbackNotificationSender, FallbackNotificationSender>();
+builder.Services.AddScoped<INotificationSender, FallbackNotificationSender>();
+
+#endregion
 
 builder.Services.AddControllers();
 

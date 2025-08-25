@@ -4,7 +4,7 @@ using Domain.Report.Abstractions;
 namespace Infrastructure.Report.Excel
 {
     //Abstract Factory
-    public class ExcelReportFactory : IReportFactory
+    public class ExcelReportFactory : IExcelReportFactory
     {
         public IReportExporter ReportExporter() => new ExcelRepotExporter();
 

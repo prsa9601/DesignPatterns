@@ -4,7 +4,7 @@ using Domain.Report.Abstractions;
 namespace Infrastructure.Report.PDF
 {
     //Abstract Factory
-    public class PDFReportFactory : IReportFactory
+    public class PDFReportFactory : IPdfReportFactory
     {
         public IReportExporter ReportExporter() => new PDFRepotExporter();
 

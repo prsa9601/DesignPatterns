@@ -7,7 +7,9 @@ namespace Infrastructure.Report.PDF
     {
         public void ExporterReport(Domain.Report.Report report)
         {
-            throw new NotImplementedException("ExportPdfReport");
+            //throw new NotImplementedException("ExportPdfReport");
+            int g = 7;
+            return;
         }
     }
 }

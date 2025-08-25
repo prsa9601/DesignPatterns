@@ -7,7 +7,9 @@ namespace Infrastructure.Report.Excel
     {
         public void ExporterReport(Domain.Report.Report report)
         {
-            throw new NotImplementedException("ExportExcelReport");
+            //throw new NotImplementedException("ExportExcelReport");
+            int g = 7;
+            return;
         }
     }
 }

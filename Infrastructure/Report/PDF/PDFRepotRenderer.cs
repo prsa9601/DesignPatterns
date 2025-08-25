@@ -7,7 +7,9 @@ namespace Infrastructure.Report.PDF
     {
         public void RenderReport(Domain.Report.Report report)
         {
-            throw new NotImplementedException("RenderPdfReport");
+            //throw new NotImplementedException("RenderPdfReport");
+            int g = 7;
+            return ;
         }
     }
 }

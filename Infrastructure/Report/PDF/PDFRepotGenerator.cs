@@ -7,7 +7,9 @@ namespace Infrastructure.Report.PDF
     {
         public Domain.Report.Report GenerateReport(string title)
         {
-            throw new NotImplementedException("GeneratePdfReport");
+            //throw new NotImplementedException("GeneratePdfReport");
+            int g = 7;
+            return new Domain.Report.Report();
         }
     }
 }
